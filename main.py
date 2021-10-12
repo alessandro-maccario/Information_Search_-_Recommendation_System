@@ -12,12 +12,14 @@
 import numpy as np
 import pandas as pd
 
-# BUTTA TUTTO SU GITHUB
-# db_ratings = pd.read_csv("ratings.csv", sep=',')
-# print(db_ratings)
+# OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
+f = open('ratings.csv', 'r')
 
-with open('ratings.csv') as f:
-    lines = [line.rstrip() for line in f]
+lines = f.readlines()
+result = list()
 
-print(lines[0:50])
+for x in lines:
+    result.append(x.split(',')[2])
+f.close()
 
+print(result)
