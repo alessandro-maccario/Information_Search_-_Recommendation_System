@@ -96,4 +96,75 @@ def main(file):
     return computeMeanRating(file)
 
 # PRINT THE RESULT
-print(main(p))
+# print(main(p))
+
+"""
+    EXERCISE 3 - Information Search and Recommendation System Course 
+
+    Task 2.3) Functions and return values 
+
+    Extend the function from the previous Task so that it returns not only the mean value, 
+    but also the mode and the median. Write a corresponding test method. 
+"""
+
+# CREATE A FUNCTION THAT FIND THE MIDDLE ELEMENT OF A LIST
+
+def findMiddle(input_list):
+    lenght = len(input_list)
+    middle = int(float(len(input_list))/2)
+    if lenght % 2 != 0:
+        return int((input_list[middle] + (input_list[middle] + 1))/2)
+    else:
+        return middle
+
+
+print(findMiddle([1,2,3,4,5]))
+print(findMiddle([1,2,3,4,5,6, 7]))
+
+
+def computeMeanRating(file):
+    # HANDLING EXCEPTION. OPEN FILE IF EXISTS
+    if p.exists():
+
+        with p.open('r') as f:
+            # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
+            # f = open(file, 'r')
+            lines = f.readlines()
+            # STORE EACH RATING IN THE LIST. (List Comprehension)
+            result = [x.split(',')[2] for x in lines]
+
+            # Close the file.
+            f.close()
+    else:
+        print("Either the file is missing or not readable!")
+        exit()
+
+    # CALCULATE THE MEAN
+    summa = 0
+    # CREATE A NEW LIST WITH THE FIRST ELEMENT AS A NAME COLUMN
+    # AND ALL THE VALUES AS IN FLOATING NUMBERS
+    new_list = [result[0]] + [float(i) for i in result[1:]]
+
+    # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
+    count = 0
+    for x in new_list[1:]:
+        summa += x
+        count += 1
+
+    # CALCULATE THE MEAN
+    average_rating = float(round(summa / count))
+
+    # CALCULATE THE MEDIAN: sort the list; find the median value.
+    sorted_list = sorted(result[1:])
+    # if len(sorted_list) % 2 == 0:
+
+
+    # RETURN AVERAGE, MEDIAN, MODE
+    return average_rating
+
+
+def main(file):
+    return computeMeanRating(file)
+
+# PRINT THE RESULT
+# print(main(p))
