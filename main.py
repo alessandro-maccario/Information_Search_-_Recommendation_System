@@ -16,10 +16,29 @@ import pandas as pd
 f = open('ratings.csv', 'r')
 
 lines = f.readlines()
-result = list()
 
-for x in lines:
-    result.append(x.split(',')[2])
+# result = list()
+# For loop
+# for x in lines:
+#     result.append(x.split(',')[2])
+# f.close()
+
+# Store each rating in the list. (List Comprehension)
+result = [x.split(',')[2] for x in lines]
+
+# Close the file.
 f.close()
 
-print(result)
+# Iterate through the resulting list, sum up the values and calculate the average at the end.
+
+def summa_list(l):
+    summa = 0
+    new_list = [result[0]] + [float(i) for i in l[1:]]
+    for x in new_list[1:]:
+        summa += x
+    average_rating = summa/len(l)
+    return average_rating
+
+# Print the result.
+print(summa_list(result))
+
