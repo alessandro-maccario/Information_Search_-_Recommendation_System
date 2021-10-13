@@ -42,7 +42,7 @@
 # print(summa_list(result))
 #
 # # END
-
+import pandas as pd
 
 """
     EXERCISE 2 - Information Search and Recommendation System Course
@@ -172,17 +172,18 @@ class statisticsRating():
         # return [k for k, v in c.items() if v == c.most_common(1)[0][1]]
 
 
-p = Path('ratings.csv')
-m_odd = [1, 2, 3, 4, 5]
-m_even = [1, 2, 3, 4, 5, 6]
-l = [1, 2, 3, 4, 5, 6, 5, 7 ,5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 8, 8, 8, 8]
+# TEST CLASS AND FUNCTION
+# p = Path('ratings.csv')
+# m_odd = [1, 2, 3, 4, 5]
+# m_even = [1, 2, 3, 4, 5, 6]
+# l = [1, 2, 3, 4, 5, 6, 5, 7 ,5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 8, 8, 8, 8]
 
 # INITIALISE THE INSTANCE
-stat_1 = statisticsRating()
-print(stat_1.computeMeanRating(stat_1.openFile(p)))
-print(stat_1.computeMedianRating(m_odd))
-print(stat_1.computeMedianRating(m_even))
-print(stat_1.computeModeRating(l))
+# stat_1 = statisticsRating()
+# print(stat_1.computeMeanRating(stat_1.openFile(p)))
+# print(stat_1.computeMedianRating(m_odd))
+# print(stat_1.computeMedianRating(m_even))
+# print(stat_1.computeModeRating(l))
 
 
 """
@@ -199,3 +200,21 @@ print(stat_1.computeModeRating(l))
     - Optional: Sort the genres by the number of movies they are assigned to in descending order. 
     Use a suitable library function.
 """
+
+# READ THE DATABASE
+movies_db = pd.read_csv('movies.csv', sep=',')
+
+def splitElementInColumn(db, column):
+    # SPLIT THE ELEMENTS IN COLUMN
+    b = db[column].apply(lambda row: row.split("|"))
+
+    # LOOP THROUGH EVERY ROW OF B AND ADD EACH ELEMENT TO A LIST WITH LIST COMPREHENSION
+    genres_list = [single_elem for row in b for single_elem in row]
+
+    # CHOOSE THE UNIQUE ELEMENT
+    unique_genres = pd.unique(genres_list)
+
+    return unique_genres, len(unique_genres)
+
+# PRINT THE RESULT
+print(splitElementInColumn(movies_db, 'genres'))
