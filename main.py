@@ -106,45 +106,52 @@ def main(file):
     Extend the function from the previous Task so that it returns not only the mean value, 
     but also the mode and the median. Write a corresponding test method. 
 """
+from collections import Counter
 
 
-def computeMeanRating(file):
-    # HANDLING EXCEPTION. OPEN FILE IF EXISTS
-    if p.exists():
+# STATISTIC CLASS
+class statisticsRating():
 
-        with p.open('r') as f:
-            # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
-            # f = open(file, 'r')
-            lines = f.readlines()
-            # STORE EACH RATING IN THE LIST. (List Comprehension)
-            result = [x.split(',')[2] for x in lines]
+    def openFile(self, file):
 
-            # Close the file.
-            f.close()
-    else:
-        print("Either the file is missing or not readable!")
-        exit()
+        # HANDLING EXCEPTION. OPEN FILE IF EXISTS
+        if file.exists():
 
-    # CALCULATE THE MEAN
-    summa = 0
-    # CREATE A NEW LIST WITH THE FIRST ELEMENT AS A NAME COLUMN
-    # AND ALL THE VALUES AS IN FLOATING NUMBERS
-    new_list = [result[0]] + [float(i) for i in result[1:]]
+            with file.open('r') as f:
+                # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
+                # f = open(file, 'r')
+                lines = f.readlines()
+                # STORE EACH RATING IN THE LIST. (List Comprehension)
+                result = [x.split(',')[2] for x in lines]
 
-    # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
-    count = 0
-    for x in new_list[1:]:
-        summa += x
-        count += 1
+                # CLOSE THE FILE
+                f.close()
+        else:
+            print("Either the file is missing or not readable!")
+            exit()
 
-    # CALCULATE THE MEAN
-    average_rating = float(round(summa / count))
+        return result
 
-    # CALCULATE THE MEDIAN: sort the list; find the median value.
 
-    # CREATE A FUNCTION THAT FIND THE MIDDLE ELEMENT OF A LIST
+    def computeMeanRating(self, inputList):
 
-    def findMedian(input_list):
+        # CALCULATE THE MEAN
+        summa = 0
+        # CREATE A NEW LIST WITH THE FIRST ELEMENT AS A NAME COLUMN
+        # AND ALL THE VALUES AS IN FLOATING NUMBERS
+        new_list = [inputList[0]] + [float(i) for i in inputList[1:]]
+
+        # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
+        count = 0
+        for x in new_list[1:]:
+            summa += x
+            count += 1
+
+        average_rating = float(round(summa / count))
+        return average_rating
+
+
+    def computeMedianRating(self, input_list):
         lenght = len(input_list)
         middle = int(lenght / 2)
         if lenght % 2:
@@ -153,15 +160,42 @@ def computeMeanRating(file):
             return (sorted(input_list)[middle - 1] + (sorted(input_list)[middle])) / 2
 
 
-    # RETURN AVERAGE, MEDIAN, MODE
-    return average_rating
+    def computeModeRating(self, input_list):
+
+        c = Counter(input_list)
+
+        for k,v in c.items():
+            if v == c.most_common(1)[0][1]:
+                return k
+
+        # WITH LIST COMPREHENSION
+        # return [k for k, v in c.items() if v == c.most_common(1)[0][1]]
 
 
-def main(file):
-    return computeMeanRating(file)
+p = Path('ratings.csv')
+m_odd = [1, 2, 3, 4, 5]
+m_even = [1, 2, 3, 4, 5, 6]
+l = [1, 2, 3, 4, 5, 6, 5, 7 ,5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 8, 8, 8, 8]
 
-# PRINT THE RESULT
-# print(main(p))
+# INITIALISE THE INSTANCE
+stat_1 = statisticsRating()
+print(stat_1.computeMeanRating(stat_1.openFile(p)))
+print(stat_1.computeMedianRating(m_odd))
+print(stat_1.computeMedianRating(m_even))
+print(stat_1.computeModeRating(l))
 
-print(findMedian([1, 2, 3, 4, 5]))
-print(findMedian([1, 2, 3, 4, 5, 6]))
+
+"""
+    Task 2.4) More data structures and file handling 
+
+    Our next goal is to analyze the genres that are appearing in the file “movies.csv”. 
+    Write a procedure that takes the file name as a parameter and prints the following on the screen: 
+    
+    - All distinct genre names that appear in the file. You can use the Python csv module. 
+    - For each genre, determine to how many movies it was assigned. Use a dictionary (genre ‐> 
+    counter) to save the number of genre assignments.  
+            - Print the number of movies per genre 
+            - Determine and print out the most popular genre. 
+    - Optional: Sort the genres by the number of movies they are assigned to in descending order. 
+    Use a suitable library function.
+"""
