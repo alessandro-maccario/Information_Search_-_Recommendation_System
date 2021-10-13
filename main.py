@@ -107,20 +107,6 @@ def main(file):
     but also the mode and the median. Write a corresponding test method. 
 """
 
-# CREATE A FUNCTION THAT FIND THE MIDDLE ELEMENT OF A LIST
-
-def findMiddle(input_list):
-    lenght = len(input_list)
-    middle = int(float(len(input_list))/2)
-    if lenght % 2 != 0:
-        return int((input_list[middle] + (input_list[middle] + 1))/2)
-    else:
-        return middle
-
-
-print(findMiddle([1,2,3,4,5]))
-print(findMiddle([1,2,3,4,5,6, 7]))
-
 
 def computeMeanRating(file):
     # HANDLING EXCEPTION. OPEN FILE IF EXISTS
@@ -155,8 +141,16 @@ def computeMeanRating(file):
     average_rating = float(round(summa / count))
 
     # CALCULATE THE MEDIAN: sort the list; find the median value.
-    sorted_list = sorted(result[1:])
-    # if len(sorted_list) % 2 == 0:
+
+    # CREATE A FUNCTION THAT FIND THE MIDDLE ELEMENT OF A LIST
+
+    def findMedian(input_list):
+        lenght = len(input_list)
+        middle = int(lenght / 2)
+        if lenght % 2:
+            return sorted(input_list)[middle]
+        else:
+            return (sorted(input_list)[middle - 1] + (sorted(input_list)[middle])) / 2
 
 
     # RETURN AVERAGE, MEDIAN, MODE
@@ -168,3 +162,6 @@ def main(file):
 
 # PRINT THE RESULT
 # print(main(p))
+
+print(findMedian([1, 2, 3, 4, 5]))
+print(findMedian([1, 2, 3, 4, 5, 6]))
