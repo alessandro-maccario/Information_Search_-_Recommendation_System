@@ -1,3 +1,8 @@
+import pandas as pd
+from pathlib import Path
+from collections import Counter
+
+
 """
     EXERCISE 1 - Information Search and Recommendation System Course
     Task --> Opening files3, list data structure, loops
@@ -11,38 +16,36 @@
         - Print the result.
 """
 
-# # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
-# f = open('ratings.csv', 'r')
-#
-# lines = f.readlines()
-#
-# # Store each rating in the list. (List Comprehension)
-# result = [x.split(',')[2] for x in lines]
-#
-# # Close the file.
-# f.close()
-#
-# # Iterate through the resulting list, sum up the values and calculate the average at the end.
-#
-#
-# def summa_list(list_of_rating):
-#     summa = 0
-#     new_list = [list_of_rating[0]] + [float(i) for i in list_of_rating[1:]]
-#
-#     count = 0
-#     for x in new_list[1:]:
-#         summa += x
-#         count += 1
-#
-#     average_rating = float(round(summa/count))
-#     return average_rating
-#
-#
-# # Print the result.
-# print(summa_list(result))
-#
-# # END
-import pandas as pd
+# OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
+f = open('ratings.csv', 'r')
+
+lines = f.readlines()
+
+# Store each rating in the list. (List Comprehension)
+result = [x.split(',')[2] for x in lines]
+
+# Close the file.
+f.close()
+
+# Iterate through the resulting list, sum up the values and calculate the average at the end.
+
+
+def summa_list(list_of_rating):
+    summa = 0
+    new_list = [list_of_rating[0]] + [float(i) for i in list_of_rating[1:]]
+
+    count = 0
+    for x in new_list[1:]:
+        summa += x
+        count += 1
+
+    average_rating = float(round(summa/count))
+    return average_rating
+
+
+# Print the result.
+print(summa_list(result))
+
 
 """
     EXERCISE 2 - Information Search and Recommendation System Course
@@ -53,8 +56,6 @@ import pandas as pd
     Define this function, implement appropriate error handling procedures (including exception handling 
     in case the file cannot be read or found), and write a main function that invokes the method.
 """
-
-from pathlib import Path
 
 p = Path('ratings.csv')
 
@@ -107,7 +108,6 @@ def main(file):
     Extend the function from the previous Task so that it returns not only the mean value, 
     but also the mode and the median. Write a corresponding test method. 
 """
-from collections import Counter
 
 
 # STATISTIC CLASS
@@ -247,3 +247,5 @@ max_genre = max(genre_counter.items(), key = lambda k : k[1])
     Task 2.2 as a method to this class.  
     Write a test program that invokes the method (and thus prints the mean rating in the dataset). 
 """
+
+# LOOK AT UTILITYMODULE.PY FILE
