@@ -5,7 +5,7 @@ from collections import Counter
 
 """
     EXERCISE 1 - Information Search and Recommendation System Course
-    Task --> Opening files3, list data structure, loops
+    Task 2.1) --> Opening files, list data structure, loops
 
     Write a program that determines the mean rating in the dataset in the following way:
         - Create a list of data type “float” to store all ratings in memory.
@@ -17,17 +17,14 @@ from collections import Counter
 """
 
 # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
-f = open('ratings.csv', 'r')
 
-lines = f.readlines()
+def openFile(file):
+    f = open(file, 'r')
+    lines = f.readlines()
+    result = [x.split(',')[2] for x in lines]
+    f.close()
 
-# Store each rating in the list. (List Comprehension)
-result = [x.split(',')[2] for x in lines]
-
-# Close the file.
-f.close()
-
-# Iterate through the resulting list, sum up the values and calculate the average at the end.
+    return result
 
 
 def summa_list(list_of_rating):
@@ -39,12 +36,13 @@ def summa_list(list_of_rating):
         summa += x
         count += 1
 
+    # Iterate through the resulting list, sum up the values and calculate the average at the end.
     average_rating = float(round(summa/count))
     return average_rating
 
 
-# Print the result.
-print(summa_list(result))
+# PRINT THE RESULT
+print("Average's Rating: ", summa_list(openFile('ratings.csv')))
 
 
 """
@@ -100,6 +98,7 @@ def main(file):
 # PRINT THE RESULT
 # print(main(p))
 
+
 """
     EXERCISE 3 - Information Search and Recommendation System Course 
 
@@ -133,7 +132,6 @@ class statisticsRating:
 
         return result
 
-
     def computeMeanRating(self, inputList):
 
         # CALCULATE THE MEAN
@@ -151,7 +149,6 @@ class statisticsRating:
         average_rating = float(round(summa / count))
         return average_rating
 
-
     def computeMedianRating(self, input_list):
         lenght = len(input_list)
         middle = int(lenght / 2)
@@ -160,12 +157,11 @@ class statisticsRating:
         else:
             return (sorted(input_list)[middle - 1] + (sorted(input_list)[middle])) / 2
 
-
     def computeModeRating(self, input_list):
 
         c = Counter(input_list)
 
-        for k,v in c.items():
+        for k, v in c.items():
             if v == c.most_common(1)[0][1]:
                 return k
 
@@ -206,6 +202,7 @@ class statisticsRating:
 # READ THE DATABASE
 movies_db = pd.read_csv('movies.csv', sep=',')
 
+
 def splitElementInColumn(db, column):
     # SPLIT THE ELEMENTS IN COLUMN
     b = db[column].apply(lambda row: row.split("|"))
@@ -218,13 +215,14 @@ def splitElementInColumn(db, column):
 
     return unique_genres
 
+
 # SPLIT THE GENRE COLUMN
 movies_db['genres'] = movies_db['genres'].str.split("|")
 
 # EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER DIFFERENT CATEGORIES
 movies_db = movies_db.explode('genres')
 
-#FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
+# FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
 # COUNT THE VALUES
 count_assigned_genre_movies = movies_db.value_counts(subset=['genres']).reset_index(level=[0])
 
@@ -235,7 +233,7 @@ count_assigned_genre_movies = count_assigned_genre_movies.rename(columns={0: "va
 genre_counter = count_assigned_genre_movies.set_index("genres").to_dict()["values"]
 
 # DETERMINE AND PRINT OUT THE MOST POPULAR GENRE.
-max_genre = max(genre_counter.items(), key = lambda k : k[1])
+max_genre = max(genre_counter.items(), key = lambda k: k[1])
 
 # # OPTIONAL: SORT THE GENRES BY THE NUMBER OF MOVIES THEY ARE ASSIGNED TO IN DESCENDING ORDER.
 #   USE A SUITABLE LIBRARY FUNCTION. --> DONE ALREADY BEFORE!!!
