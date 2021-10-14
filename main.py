@@ -193,13 +193,14 @@ class statisticsRating():
     Write a procedure that takes the file name as a parameter and prints the following on the screen: 
     
     - All distinct genre names that appear in the file. You can use the Python csv module. 
-    - For each genre, determine to how many movies it was assigned. Use a dictionary (genre ‐> 
-    counter) to save the number of genre assignments.  
+    - For each genre, determine to how many movies it was assigned. 
+    Use a dictionary (genre ‐> counter) to save the number of genre assignments.  
             - Print the number of movies per genre 
             - Determine and print out the most popular genre. 
     - Optional: Sort the genres by the number of movies they are assigned to in descending order. 
     Use a suitable library function.
 """
+
 
 # READ THE DATABASE
 movies_db = pd.read_csv('movies.csv', sep=',')
@@ -214,7 +215,37 @@ def splitElementInColumn(db, column):
     # CHOOSE THE UNIQUE ELEMENT
     unique_genres = pd.unique(genres_list)
 
-    return unique_genres, len(unique_genres)
+    return unique_genres
 
-# PRINT THE RESULT
-print(splitElementInColumn(movies_db, 'genres'))
+# SPLIT THE GENRE COLUMN
+movies_db['genres'] = movies_db['genres'].str.split("|")
+
+# EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER DIFFERENT CATEGORIES
+movies_db = movies_db.explode('genres')
+
+#FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
+# COUNT THE VALUES
+count_assigned_genre_movies = movies_db.value_counts(subset=['genres']).reset_index(level=[0])
+
+# RENAME THE COLUMN
+count_assigned_genre_movies = count_assigned_genre_movies.rename(columns={0: "values"})
+
+# CREATE THE DICTIONARY
+genre_counter = count_assigned_genre_movies.set_index("genres").to_dict()["values"]
+
+# DETERMINE AND PRINT OUT THE MOST POPULAR GENRE.
+max_genre = max(genre_counter.items(), key = lambda k : k[1])
+
+# # OPTIONAL: SORT THE GENRES BY THE NUMBER OF MOVIES THEY ARE ASSIGNED TO IN DESCENDING ORDER.
+#   USE A SUITABLE LIBRARY FUNCTION. --> DONE ALREADY BEFORE!!!
+
+
+"""
+
+    Task 2.5) Modules and classes 
+    Define a Python module “utilityModule” including a class “Statistics” and add the function defined in 
+    Task 2.2 as a method to this class.  
+    Write a test program that invokes the method (and thus prints the mean rating in the dataset). 
+
+"""
+
