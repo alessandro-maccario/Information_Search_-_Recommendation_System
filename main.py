@@ -46,7 +46,7 @@ import pandas as pd
 
 """
     EXERCISE 2 - Information Search and Recommendation System Course
-    Task --> Functions and error handling 
+    Task 2.2) --> Functions and error handling 
 
     All calculations from the previous Task should now be done within a function called “computeMeanRating”, 
     which takes a file name as an input and returns a float as a result. 
@@ -60,10 +60,11 @@ p = Path('ratings.csv')
 
 
 def computeMeanRating(file):
+
     # HANDLING EXCEPTION
-    if p.exists():
+    if file.exists():
         # OPEN FILE
-        with p.open('r') as f:
+        with file.open('r') as f:
             # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
             # f = open(file, 'r')
             lines = f.readlines()
@@ -110,7 +111,7 @@ from collections import Counter
 
 
 # STATISTIC CLASS
-class statisticsRating():
+class statisticsRating:
 
     def openFile(self, file):
 
@@ -241,11 +242,8 @@ max_genre = max(genre_counter.items(), key = lambda k : k[1])
 
 
 """
-
     Task 2.5) Modules and classes 
     Define a Python module “utilityModule” including a class “Statistics” and add the function defined in 
     Task 2.2 as a method to this class.  
     Write a test program that invokes the method (and thus prints the mean rating in the dataset). 
-
 """
-
