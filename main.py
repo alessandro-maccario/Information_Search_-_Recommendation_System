@@ -2,9 +2,12 @@ import pandas as pd
 from pathlib import Path
 from collections import Counter
 
+"""
+    INFORMATION SEARCH AND RECOMMENDATION SYSTEM COURSE
+"""
+
 
 """
-    EXERCISE 1 - Information Search and Recommendation System Course
     Task 2.1) --> Opening files, list data structure, loops
 
     Write a program that determines the mean rating in the dataset in the following way:
@@ -15,6 +18,7 @@ from collections import Counter
         - Iterate through the resulting list, sum up the values and calculate the average at the end.
         - Print the result.
 """
+
 
 # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
 
@@ -42,17 +46,16 @@ def summa_list(list_of_rating):
 
 
 # PRINT THE RESULT
-print("Average's Rating: ", summa_list(openFile('ratings.csv')))
+# print("Average's Rating: ", summa_list(openFile('ratings.csv')))
 
 
 """
-    EXERCISE 2 - Information Search and Recommendation System Course
     Task 2.2) --> Functions and error handling 
 
     All calculations from the previous Task should now be done within a function called “computeMeanRating”, 
     which takes a file name as an input and returns a float as a result. 
     Define this function, implement appropriate error handling procedures (including exception handling 
-    in case the file cannot be read or found), and write a main function that invokes the method.
+    in case the filen cannot be read or found), and write a main functio that invokes the method.
 """
 
 p = Path('ratings.csv')
@@ -81,10 +84,16 @@ def computeMeanRating(file):
     # AND ALL THE VALUES AS IN FLOATING NUMBERS
     new_list = [result[0]] + [float(i) for i in result[1:]]
 
-    # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
+    # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY ROWS THERE ARE
     count = 0
     for x in new_list[1:]:
-        summa += x
+        # IF X: YOU NEED TO CHECK IF X IS A NUMBER OR AN EMPTY CELL
+        if not x:
+            x = 0
+        try:
+            summa += x
+        except ValueError:
+            print("You need numbers to add them up!")
         count += 1
 
     average_rating = float(round(summa / count))
@@ -96,12 +105,10 @@ def main(file):
     return computeMeanRating(file)
 
 # PRINT THE RESULT
-# print(main(p))
+# print("Average's Rating: ", main(p))
 
 
 """
-    EXERCISE 3 - Information Search and Recommendation System Course 
-
     Task 2.3) Functions and return values 
 
     Extend the function from the previous Task so that it returns not only the mean value, 
@@ -109,7 +116,7 @@ def main(file):
 """
 
 
-# STATISTIC CLASS
+# STATISTIC-RATING CLASS
 class statisticsRating:
 
     def openFile(self, file):
@@ -143,7 +150,13 @@ class statisticsRating:
         # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
         count = 0
         for x in new_list[1:]:
-            summa += x
+            # IF X: YOU NEED TO CHECK IF X IS A NUMBER OR AN EMPTY CELL
+            if not x:
+                x = 0
+            try:
+                summa += x
+            except ValueError:
+                print("You need numbers to add them up!")
             count += 1
 
         average_rating = float(round(summa / count))
@@ -203,47 +216,46 @@ class statisticsRating:
 movies_db = pd.read_csv('movies.csv', sep=',')
 
 
-def splitElementInColumn(db, column):
+def uniqueGenre(db, column):
     # SPLIT THE ELEMENTS IN COLUMN
-    b = db[column].apply(lambda row: row.split("|"))
+    splittingCol = db[column].apply(lambda row: row.split("|"))
 
-    # LOOP THROUGH EVERY ROW OF B AND ADD EACH ELEMENT TO A LIST WITH LIST COMPREHENSION
-    genres_list = [single_elem for row in b for single_elem in row]
+    # LOOP THROUGH EVERY ROW OF SPLITTINGCOL AND ADD EACH ELEMENT TO A LIST WITH LIST COMPREHENSION
+    genres_list = [single_elem for row in splittingCol for single_elem in row]
 
     # CHOOSE THE UNIQUE ELEMENT
     unique_genres = pd.unique(genres_list)
 
     return unique_genres
 
-
-# SPLIT THE GENRE COLUMN
-movies_db['genres'] = movies_db['genres'].str.split("|")
-
-# EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER DIFFERENT CATEGORIES
-movies_db = movies_db.explode('genres')
-
-# FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
-# COUNT THE VALUES
-count_assigned_genre_movies = movies_db.value_counts(subset=['genres']).reset_index(level=[0])
-
-# RENAME THE COLUMN
-count_assigned_genre_movies = count_assigned_genre_movies.rename(columns={0: "values"})
-
-# CREATE THE DICTIONARY
-genre_counter = count_assigned_genre_movies.set_index("genres").to_dict()["values"]
-
-# DETERMINE AND PRINT OUT THE MOST POPULAR GENRE.
-max_genre = max(genre_counter.items(), key = lambda k: k[1])
-
-# # OPTIONAL: SORT THE GENRES BY THE NUMBER OF MOVIES THEY ARE ASSIGNED TO IN DESCENDING ORDER.
-#   USE A SUITABLE LIBRARY FUNCTION. --> DONE ALREADY BEFORE!!!
+# print(uniqueGenre(movies_db, 'genres'))
 
 
+def countGenreToDict(db, column):
+
+    # SPLIT THE GENRE COLUMN
+    db[column] = db[column].str.split("|")
+    # EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER DIFFERENT CATEGORIES
+    movies_db = db.explode(column)
+    # FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
+    # COUNT THE VALUES AND SORT THE GENRES BY THE NUMBER OF MOVIES THEY ARE ASSIGNED TO IN DESCENDING ORDER.
+    count_assigned_genre_movies = movies_db.value_counts(subset=[column]).reset_index(level=[0])
+    # RENAME THE COLUMN
+    count_assigned_genre_movies = count_assigned_genre_movies.rename(columns={0: "values"})
+    # CREATE THE DICTIONARY
+    genre_counter = count_assigned_genre_movies.set_index(column).to_dict()["values"]
+    # DETERMINE AND PRINT OUT THE MOST POPULAR GENRE.
+    max_genre = max(genre_counter.items(), key = lambda k: k[1])
+
+    return genre_counter, ("Most popular genre: ", max_genre)
+
+
+# print(countGenreToDict(movies_db, 'genres'))
 """
-    Task 2.5) Modules and classes 
-    Define a Python module “utilityModule” including a class “Statistics” and add the function defined in 
-    Task 2.2 as a method to this class.  
-    Write a test program that invokes the method (and thus prints the mean rating in the dataset). 
+    Task 2.5) Modules and classes
+    Define a Python module “utilityModule” including a class “Statistics” and add the function defined in
+    Task 2.2 as a method to this class.
+    Write a test program that invokes the method (and thus prints the mean rating in the dataset).
 """
 
 # LOOK AT UTILITYMODULE.PY FILE
