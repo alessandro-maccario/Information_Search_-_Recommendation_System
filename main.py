@@ -55,7 +55,7 @@ def summa_list(list_of_rating):
     All calculations from the previous Task should now be done within a function called “computeMeanRating”, 
     which takes a file name as an input and returns a float as a result. 
     Define this function, implement appropriate error handling procedures (including exception handling 
-    in case the filen cannot be read or found), and write a main functio that invokes the method.
+    in case the file cannot be read or found), and write a main function that invokes the method.
 """
 
 p = Path('ratings.csv')
@@ -93,7 +93,7 @@ def computeMeanRating(file):
         try:
             summa += x
         except ValueError:
-            print("You need numbers to add them up!")
+            print("You need numbers to add them up! Convert all the data in values before summing them up.")
         count += 1
 
     average_rating = float(round(summa / count))
@@ -235,12 +235,12 @@ def countGenreToDict(db, column):
 
     # SPLIT THE GENRE COLUMN
     db[column] = db[column].str.split("|")
-    # EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER DIFFERENT CATEGORIES
+    # EXPLODE THE RESULTS: EACH ROW CONTAINS THE SAME FILM UNDER FOR EACH CATEGORIES
     movies_db = db.explode(column)
     # FOR EACH GENRE, DETERMINE TO HOW MANY MOVIES IT WAS ASSIGNED.
     # COUNT THE VALUES AND SORT THE GENRES BY THE NUMBER OF MOVIES THEY ARE ASSIGNED TO IN DESCENDING ORDER.
     count_assigned_genre_movies = movies_db.value_counts(subset=[column]).reset_index(level=[0])
-    # RENAME THE COLUMN
+    # RENAME THE COLUMN TO VALUES
     count_assigned_genre_movies = count_assigned_genre_movies.rename(columns={0: "values"})
     # CREATE THE DICTIONARY
     genre_counter = count_assigned_genre_movies.set_index(column).to_dict()["values"]
