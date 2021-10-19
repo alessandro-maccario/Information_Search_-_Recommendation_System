@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from pathlib import Path
 from collections import Counter
@@ -20,6 +21,11 @@ from collections import Counter
 """
 
 
+# CREATE A LIST OF DATA TYPE “FLOAT” TO STORE ALL RATINGS IN MEMORY.
+ratings_float_list = list("")
+# CONVERT ALL ELEMENTS FROM THE PREVIOUS LIST TO FLOAT NUMBER
+ratings_float_list = [float(x) for x in ratings_float_list]
+
 # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
 
 def openFile(file):
@@ -31,22 +37,24 @@ def openFile(file):
     return result
 
 
-def summa_list(list_of_rating):
+def summa_list(list_of_rating, empty_list):
     summa = 0
-    new_list = [list_of_rating[0]] + [float(i) for i in list_of_rating[1:]]
+
+    empty_list.append(list_of_rating[0])
+    empty_list += ([float(i) for i in list_of_rating[1:]])
 
     count = 0
-    for x in new_list[1:]:
+    for x in empty_list[1:]:
         summa += x
         count += 1
 
-    # Iterate through the resulting list, sum up the values and calculate the average at the end.
+    # ITERATE THROUGH THE RESULTING LIST, SUM UP THE VALUES AND CALCULATE THE AVERAGE AT THE END.
     average_rating = float(round(summa/count))
     return average_rating
 
 
 # PRINT THE RESULT
-# print("Average's Rating: ", summa_list(openFile('ratings.csv')))
+print("Average's Rating: ", summa_list(openFile('ratings.csv'), ratings_float_list))
 
 
 """
