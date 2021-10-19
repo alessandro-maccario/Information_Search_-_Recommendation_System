@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 from pathlib import Path
 from collections import Counter
@@ -20,11 +19,11 @@ from collections import Counter
         - Print the result.
 """
 
-
 # CREATE A LIST OF DATA TYPE “FLOAT” TO STORE ALL RATINGS IN MEMORY.
 ratings_float_list = list("")
 # CONVERT ALL ELEMENTS FROM THE PREVIOUS LIST TO FLOAT NUMBER
 ratings_float_list = [float(x) for x in ratings_float_list]
+
 
 # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
 
@@ -54,7 +53,7 @@ def summa_list(list_of_rating, empty_list):
 
 
 # PRINT THE RESULT
-print("Average's Rating: ", summa_list(openFile('ratings.csv'), ratings_float_list))
+# print("Average's Rating: ", summa_list(openFile('ratings.csv'), ratings_float_list))
 
 
 """
@@ -76,9 +75,8 @@ def computeMeanRating(file):
         # OPEN FILE
         with file.open('r') as f:
             # OPEN THE FILE “RATINGS.CSV” AND READ THE CONTENTS LINE BY LINE.
-            # f = open(file, 'r')
             lines = f.readlines()
-            # STORE EACH RATING IN THE LIST. (List Comprehension)
+            # STORE EACH RATING IN THE LIST
             result = [x.split(',')[2] for x in lines]
 
             # Close the file.
@@ -88,20 +86,22 @@ def computeMeanRating(file):
         exit()
 
     summa = 0
+
     # CREATE A NEW LIST WITH THE FIRST ELEMENT AS A NAME COLUMN
     # AND ALL THE VALUES AS IN FLOATING NUMBERS
-    new_list = [result[0]] + [float(i) for i in result[1:]]
+    # FIRST, CHECK IF THE ELEMENT IT CAN BE CONVERTED TO FLOAT (HANDLING EXCEPTION)
+    try:
+        new_list = [result[0]] + [float(i) for i in result[1:]]
+    except ValueError:
+        return "The element to convert must be a number!"
 
     # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY ROWS THERE ARE
     count = 0
     for x in new_list[1:]:
-        # IF X: YOU NEED TO CHECK IF X IS A NUMBER OR AN EMPTY CELL
+        # IF NOT X: YOU NEED TO CHECK IF X IS AN EMPTY ELEMENT: IF IT IS CONVERT TO 0
         if not x:
             x = 0
-        try:
-            summa += x
-        except ValueError:
-            print("You need numbers to add them up! Convert all the data in values before summing them up.")
+        summa += x
         count += 1
 
     average_rating = float(round(summa / count))
@@ -111,6 +111,7 @@ def computeMeanRating(file):
 
 def main(file):
     return computeMeanRating(file)
+
 
 # PRINT THE RESULT
 # print("Average's Rating: ", main(p))
@@ -151,24 +152,27 @@ class statisticsRating:
 
         # CALCULATE THE MEAN
         summa = 0
+
         # CREATE A NEW LIST WITH THE FIRST ELEMENT AS A NAME COLUMN
         # AND ALL THE VALUES AS IN FLOATING NUMBERS
-        new_list = [inputList[0]] + [float(i) for i in inputList[1:]]
+        # FIRST, CHECK IF THE ELEMENT IT CAN BE CONVERTED TO FLOAT (HANDLING EXCEPTION)
+        try:
+            new_list = [inputList[0]] + [float(i) for i in inputList[1:]]
+        except ValueError:
+            return "The element to convert must be a number!"
 
         # INITIALISE A COUNT VARIABLE USEFUL TO COUNT HOW MANY NUMBER THERE ARE
         count = 0
         for x in new_list[1:]:
-            # IF X: YOU NEED TO CHECK IF X IS A NUMBER OR AN EMPTY CELL
+            # IF NOT X: YOU NEED TO CHECK IF X IS AN EMPTY ELEMENT: IF IT IS CONVERT TO 0
             if not x:
                 x = 0
-            try:
-                summa += x
-            except ValueError:
-                print("You need numbers to add them up!")
+            summa += x
             count += 1
 
         average_rating = float(round(summa / count))
         return average_rating
+
 
     def computeMedianRating(self, input_list):
         lenght = len(input_list)
@@ -253,12 +257,13 @@ def countGenreToDict(db, column):
     # CREATE THE DICTIONARY
     genre_counter = count_assigned_genre_movies.set_index(column).to_dict()["values"]
     # DETERMINE AND PRINT OUT THE MOST POPULAR GENRE.
-    max_genre = max(genre_counter.items(), key = lambda k: k[1])
+    max_genre = max(genre_counter.items(), key=lambda k: k[1])
 
     return genre_counter, ("Most popular genre: ", max_genre)
 
 
 # print(countGenreToDict(movies_db, 'genres'))
+
 """
     Task 2.5) Modules and classes
     Define a Python module “utilityModule” including a class “Statistics” and add the function defined in
