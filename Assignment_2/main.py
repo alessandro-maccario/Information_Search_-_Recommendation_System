@@ -62,8 +62,66 @@ new_series.index = ['a', 'b', 'c']
 
 """
 
+# Create a nested list as follows:
+#       data = [['Toy Story',21.946943],
+#               ['Jumanji',17.015539],
+#               ['Grumpier Old Men',11.7129]]
 data = [['Toy Story', 21.946943],
         ['Jumanji',17.015539],
         ['Grumpier Old Men', 11.7129]]
 
-print(data)
+# print(data)
+
+# Create a DataFrame object from the nested list with column headings ‘title’ and ‘popularity’.
+df_data = pd.DataFrame(data, columns = ['title', 'popularity'])
+# print(df_data)
+
+# Create a new DataFrame which has the entries sorted by popularity in ascending order.
+df_data_sorted = df_data.sort_values(by=['popularity'])
+# print(df_data_sorted)
+
+# Print the popularity values.
+print(df_data_sorted['popularity'])
+
+
+"""
+        Task 3) Analyzing a movie dataset 
+        
+        Download the movie metadata dataset at  
+        https://www.kaggle.com/rounakbanik/the‐movies‐dataset/ 
+        (If the link does not work, go to https://www.kaggle.com/rounakbanik and navigate to the 
+        Movies Dataset) 
+        Write a program that does the following: 
+                Read the CSV file “movies_metadata” into a Pandas DataFrame.
+                Use the type function to inspect the DataFrame, i.e, inspect the output of the 
+                command: 
+                        print(type(df))
+                Print the information about the first and the last movie in the dataset.
+                Show the information about the movie “Jumanji”.
+        Create a smaller DataFrame called small_df from the given one by considering only the 
+        following columns: 'title', 'release_date', 'popularity', 'revenue', 
+        'runtime' and 'genres',
+        
+        Create a function “to_float” to convert the type of its input to float with following code: 
+        
+        def to_float(x): 
+                try: 
+                        x = float(x) 
+                except: 
+                        x = numpy.nan 
+                return x   
+
+        Next, add the following code to your program that adds a column names ‘release_year’ 
+        to the DataFrame. Inspect how the lambda function is working.
+        
+        small_df = df[['title', 'release_date', 'popularity', 'revenue', 'runtime', 'genres']].copy() 
+        small_df.loc['release_date'] = pd.to_datetime(small_df['release_date'], errors='coerce') 
+        small_df['release_year'] = small_df['release_date'].apply
+                (lambda x: str(x).split('-')[0] if x != numpy.nan else numpy.nan) 
+        small_df['release_year'] = small_df['release_year'].apply(to_float) 
+        small_df['release_year'] = small_df['release_year'].astype('float') 
+        small_df = small_df.drop(columns="release_date")
+        
+        Now, print the titles of all movies that were released after the year 2010. 
+        
+"""
