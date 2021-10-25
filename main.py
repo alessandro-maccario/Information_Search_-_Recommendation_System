@@ -4,6 +4,7 @@ from collections import Counter
 
 """
     INFORMATION SEARCH AND RECOMMENDATION SYSTEM COURSE
+    ASSIGNMENT 1
 """
 
 
@@ -57,11 +58,11 @@ def summa_list(list_of_rating, empty_list):
 
 
 """
-    Task 2.2) --> Functions and error handling 
+    Task 2.2) --> Functions and error handling
 
-    All calculations from the previous Task should now be done within a function called “computeMeanRating”, 
-    which takes a file name as an input and returns a float as a result. 
-    Define this function, implement appropriate error handling procedures (including exception handling 
+    All calculations from the previous Task should now be done within a function called “computeMeanRating”,
+    which takes a file name as an input and returns a float as a result.
+    Define this function, implement appropriate error handling procedures (including exception handling
     in case the file cannot be read or found), and write a main function that invokes the method.
 """
 
@@ -118,10 +119,10 @@ def main(file):
 
 
 """
-    Task 2.3) Functions and return values 
+    Task 2.3) Functions and return values
 
-    Extend the function from the previous Task so that it returns not only the mean value, 
-    but also the mode and the median. Write a corresponding test method. 
+    Extend the function from the previous Task so that it returns not only the mean value,
+    but also the mode and the median. Write a corresponding test method.
 """
 
 
@@ -209,17 +210,17 @@ class statisticsRating:
 
 
 """
-    Task 2.4) More data structures and file handling 
+    Task 2.4) More data structures and file handling
 
-    Our next goal is to analyze the genres that are appearing in the file “movies.csv”. 
-    Write a procedure that takes the file name as a parameter and prints the following on the screen: 
-    
-    - All distinct genre names that appear in the file. You can use the Python csv module. 
-    - For each genre, determine to how many movies it was assigned. 
-    Use a dictionary (genre ‐> counter) to save the number of genre assignments.  
-            - Print the number of movies per genre 
-            - Determine and print out the most popular genre. 
-    - Optional: Sort the genres by the number of movies they are assigned to in descending order. 
+    Our next goal is to analyze the genres that are appearing in the file “movies.csv”.
+    Write a procedure that takes the file name as a parameter and prints the following on the screen:
+
+    - All distinct genre names that appear in the file. You can use the Python csv module.
+    - For each genre, determine to how many movies it was assigned.
+    Use a dictionary (genre ‐> counter) to save the number of genre assignments.
+            - Print the number of movies per genre
+            - Determine and print out the most popular genre.
+    - Optional: Sort the genres by the number of movies they are assigned to in descending order.
     Use a suitable library function.
 """
 
