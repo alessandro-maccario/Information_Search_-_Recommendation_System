@@ -1,6 +1,8 @@
 import numpy
+import statistics
 import numpy as np
 import pandas as pd
+
 
 """
     INFORMATION SEARCH AND RECOMMENDATION SYSTEM COURSE
@@ -203,4 +205,37 @@ small_df['release_year'] = small_df['release_year'].astype('float')
 small_df = small_df.drop(columns='release_date')
 
 # Now, print the titles of all movies that were released after the year 2010.
-print(small_df[small_df['release_year'] > 2010.0])
+# print(small_df[small_df['release_year'] > 2010.0])
+
+"""
+        Task 4) Analyzing a rating dataset
+         
+        - Read the file “ratings_small.csv” into a Pandas DataFrame. 
+        - Our goal is now to compute for every movie its mean and median rating value. For each 
+          movie, we would therefore like to print a dictionary like this:  
+          {'id': 1, 'rating_mean': 3.8724696356275303, 'rating_median': 4.0} 
+                        - Use the method “groupBy” to organize the DataFrame by “movieID”.                        
+                        - Iterate over the resulting grouped data structure 
+                                - For each tuple, use the methods “mean()” and “median()” to determine 
+                                the values for each movie.  
+                
+                        - Add a new dictionary entry to the resulting list 
+                        - Print the list of dictionaries.
+"""
+
+ratings_small = pd.read_csv('archive/ratings_small.csv')
+# print(type(ratings_small))
+print(ratings_small.columns.values)
+
+grouped_rating_small = ratings_small.groupby(by=['movieId'])
+# print(grouped_rating_small)
+
+# TODO:
+## Add a new dictionary entry to the resulting list
+## CREATE A DICT
+## TAKE KEY VALUE
+
+mean_rating = [grouped_rating_small.get_group(key)['rating'].mean() for key, item in grouped_rating_small]
+median_rating = [grouped_rating_small.get_group(key)['rating'].median() for key, item in grouped_rating_small]
+print(mean_rating)
+
