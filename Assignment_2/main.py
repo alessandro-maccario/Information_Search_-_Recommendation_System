@@ -273,8 +273,9 @@ user_watched = ratings_small.groupby(by=['userId'])
 # Print the set of rated movies for user A.
 # TODO:
 ## Is it user A or user 1? Because we don't have letters but only numbers as userId!
-print(set(user_watched.get_group(1)['movieId']))
-
+# print(set(user_watched.get_group(1)['movieId']))
+user_A_watched_movie_list = set(user_watched.get_group(1)['movieId'])
+print(user_A_watched_movie_list)
 # Given this set of movies, our goal is now to find other users who have rated at least three
 # of the movies that user A has rated. Proceed as follows.
 # - Iterate over the already grouped DataFrame
@@ -283,4 +284,31 @@ print(set(user_watched.get_group(1)['movieId']))
 #         least three of the movies that user A has rated.
 #       - If so, remember the user.
 # - Print all users with an intersection of at least three movies.
+
+# create a list to store all the users that as the same rating movies than user A/1
+same_rating = []
+
+# print([{'id': user_watched.get_group(key)['movieId'].unique()[0],}
+#                for key, item in user_watched])
+
+# CREATE THE SECOND LIST OF USER B
+user_D_watched_movie_list = set(user_watched.get_group(4)['movieId'])
+print(user_D_watched_movie_list)
+
+print(user_A_watched_movie_list.isdisjoint(user_D_watched_movie_list))
+
+# CHECK IF THE TWO SET HAVE AT LEAST THREE ELEMENTS IN COMMON
+# FIRST: SORT
+# SECOND: COMPARE
+
+sort_A = (sorted(user_A_watched_movie_list))
+sort_D = (sorted(user_D_watched_movie_list))
+
+list_of_equal = []
+for elem in sort_A:
+        for el in sort_D:
+                if elem == el:
+                        list_of_equal.append(elem)
+if len(list_of_equal) >= 3:
+        print(list_of_equal)
 
