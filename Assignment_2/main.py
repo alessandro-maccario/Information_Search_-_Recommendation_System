@@ -217,9 +217,8 @@ small_df = small_df.drop(columns='release_date')
                         - Use the method “groupBy” to organize the DataFrame by “movieID”.                        
                         - Iterate over the resulting grouped data structure 
                                 - For each tuple, use the methods “mean()” and “median()” to determine 
-                                the values for each movie.  
-                
-                        - Add a new dictionary entry to the resulting list 
+                                the values for each movie.
+                                - Add a new dictionary entry to the resulting list. 
                         - Print the list of dictionaries.
 """
 
@@ -228,14 +227,60 @@ ratings_small = pd.read_csv('archive/ratings_small.csv')
 print(ratings_small.columns.values)
 
 grouped_rating_small = ratings_small.groupby(by=['movieId'])
-# print(grouped_rating_small)
+# print(grouped_rating_small.head())
 
+# - Iterate over the resulting grouped data structure:
+#       - For each tuple, use the methods “mean()” and “median()” to determine the values for each movie.
+#       - Add a new dictionary entry to the resulting list
+# - Print the list of dictionaries.
+
+# mean_rating = [{'id': grouped_rating_small.get_group(key)['movieId'].unique()[0],
+#                'rating_mean': grouped_rating_small.get_group(key)['rating'].mean(),
+#                'rating_median': grouped_rating_small.get_group(key)['rating'].median()}
+#                for key, item in grouped_rating_small]
+
+# print(mean_rating)
+
+
+"""
+        Task 5) Finding similar users 
+                - Read the file “ratings_small.csv” into a Pandas DataFrame. 
+                - Determine the set of users watched by an arbitrary user A (e.g. the first one) 
+                        - Group the DataFrame by “userID” (using the groupBy‐function)
+                        - Take the first group/user (using “get_group”), access the rated movies by ID and 
+                        use the “set” function to create a set of the returned values. 
+                        - Print the set of rated movies for user A.
+                - Given this set of movies, our goal is now to find other users who have rated at least three 
+                of the movies that user A has rated. Proceed as follows.
+                        - Iterate over the already grouped DataFrame
+                                - Access the rated movies
+                                - Use a set intersection operation to see if the current user has rated at 
+                                least three of the movies that user A has rated.
+                                - If so, remember the user.
+                        - Print all users with an intersection of at least three movies.
+                                   
+"""
+
+# Read the file “ratings_small.csv” into a Pandas DataFrame.
+ratings_small = pd.read_csv('archive/ratings_small.csv')
+
+# Group the DataFrame by “userID” (using the groupBy‐function)
+user_watched = ratings_small.groupby(by=['userId'])
+# print(user_watched.head())
+
+# Take the first group/user (using “get_group”), access the rated movies by ID and
+# use the “set” function to create a set of the returned values.
+# Print the set of rated movies for user A.
 # TODO:
-## Add a new dictionary entry to the resulting list
-## CREATE A DICT
-## TAKE KEY VALUE
+## Is it user A or user 1? Because we don't have letters but only numbers as userId!
+print(set(user_watched.get_group(1)['movieId']))
 
-mean_rating = [grouped_rating_small.get_group(key)['rating'].mean() for key, item in grouped_rating_small]
-median_rating = [grouped_rating_small.get_group(key)['rating'].median() for key, item in grouped_rating_small]
-print(mean_rating)
+# Given this set of movies, our goal is now to find other users who have rated at least three
+# of the movies that user A has rated. Proceed as follows.
+# - Iterate over the already grouped DataFrame
+#       - Access the rated movies
+#       - Use a set intersection operation to see if the current user has rated at
+#         least three of the movies that user A has rated.
+#       - If so, remember the user.
+# - Print all users with an intersection of at least three movies.
 
